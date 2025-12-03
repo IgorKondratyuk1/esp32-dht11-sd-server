@@ -1,10 +1,10 @@
-#include "TimeUtils.h"
 #include <Arduino.h>
 #include <time.h>
+#include "TimeUtils.h"
 
 const char* ntpServer = "pool.ntp.org";
-const long  gmtOffset_sec = 2 * 3600;   // GMT+2
-const int   daylightOffset_sec = 3600;  // +1 година для літнього часу (можна 0)
+const long gmtOffset_sec = 2 * 3600;   // GMT+2
+const int daylightOffset_sec = 3600;  // +1 година для літнього часу (можна 0)
 
 void configLocalNtp() {
   Serial.println("NTP configuration...");
@@ -18,7 +18,8 @@ void configLocalNtp() {
   struct tm timeinfo;
   if (!getLocalTime(&timeinfo)) {
     Serial.println("Ntp error. Failed to obtain time");
-    while(1);
+    delay(1000);
+    configLocalNtp();
   }
   Serial.println(&timeinfo, "Date: %d-%m-%Y  Time: %H:%M:%S");
   Serial.println("NTP configured!");
